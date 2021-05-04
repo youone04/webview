@@ -20,6 +20,7 @@ import {
   BackHandler,
   TouchableOpacity
 } from 'react-native';
+import Carousel from './src/Carousel';
 
 const Loading = () => {
   return(
@@ -38,6 +39,11 @@ const Home = ({navigation}) => {
       <Button
       onPress={() => navigation.replace('webview')}
       title="START"
+      />
+       <Button
+       
+      onPress={() => navigation.navigate('carousel')}
+      title="carousel"
       />
     </View>
     </>
@@ -108,6 +114,7 @@ const App = () => {
        <Stack.Navigator>
          <Stack.Screen name ="Home" component={Home}/>
          <Stack.Screen name ="webview" component={WebviewScreen}/>
+         <Stack.Screen name ="carousel" component={Carousel}/>
        </Stack.Navigator>
     </NavigationContainer>
   );

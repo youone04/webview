@@ -17,7 +17,8 @@ import {
   Button,
   StyleSheet,
   ActivityIndicator,
-  BackHandler
+  BackHandler,
+  TouchableOpacity
 } from 'react-native';
 
 const Loading = () => {
@@ -35,8 +36,8 @@ const Home = ({navigation}) => {
     <>
     <View style={styles.container}>
       <Button
-      onPress={() => navigation.navigate('webview')}
-      title="GO TO INFINITE"
+      onPress={() => navigation.replace('webview')}
+      title="START"
       />
     </View>
     </>
@@ -57,15 +58,23 @@ const WebviewScreen = ({navigation}) => {
   const backAction = () => {
     if(kembali){
       webviewref.current.goBack();
+    }else if(!kembali){
+      BackHandler.exitApp();
     }else{
       navigation.goBack();
+      // BackHandler.exitApp();
     }
     return true;
+   }
+
+   const forwardAction = () => {
+     if(webviewref.current) webviewref.current.goForward();
    }
    
 
   return(
     <>
+    {console.log('maju ',maju)}
    <WebView
    ref={webviewref}
    source={{uri: 'https://niomic.com/'}}
@@ -78,6 +87,15 @@ const WebviewScreen = ({navigation}) => {
 
    }}
    />
+   <View style={styles.navigationContainer}>
+     <TouchableOpacity disabled={!kembali} onPress={backAction}> 
+       <Text style={[styles.btn, !kembali && {color:'grey'}]}>Back</Text>
+     </TouchableOpacity>
+
+     <TouchableOpacity disabled={!maju} onPress={forwardAction} >
+       <Text style={[styles.btn, !maju && {color:'grey'}]}>Forward</Text>
+      </TouchableOpacity>
+   </View>
     </>
   )
 }
@@ -105,6 +123,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%'
+  },
+  navigationContainer: {
+    backgroundColor: '#b43575',
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  btn: {
+    color: 'white',
+    fontSize: 24
   }
 })
 
